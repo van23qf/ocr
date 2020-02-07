@@ -70,6 +70,21 @@ def ocr(file):
         return {'status': False, 'msg': err_file.strerror}
 
 
+def xlc_table(data):
+    try:
+        result = {}
+        result['title'] = data[1]
+        result['name'] = data[4][2:5]
+        result['sex'] = data[4][8:9]
+        result['age'] = data[4][14:16]
+        result['phone'] = data[4][20:31]
+        result['idcard'] = data[5][5:]
+        result['desease_date'] = data[6]
+        return result
+    except Exception as e:
+        return False
+
+
 if __name__ == '__main__':
     result = ocr('../uploads/111111.png')
     print(result)
