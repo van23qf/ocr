@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from api import call, func
+from system import db
 
-result = call.general_ocr(func.read_file('../uploads/table.jpg'), 'tencent')
+import json
+#import sqlalchemy.engine.result.ResultProxy
+
+result = db.get_one("select * from api_log where id=3")
 print(result)
