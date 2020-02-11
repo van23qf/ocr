@@ -22,12 +22,12 @@ import requests
 import json
 import base64
 
-from api import Config
+import config
 
 
 OCR_API_CONFIG = {
-    'api_key': Config.faceid['idcard']['api_key'],
-    'api_secret': Config.faceid['idcard']['api_secret']
+    'api_key': config.faceid['idcard']['api_key'],
+    'api_secret': config.faceid['idcard']['api_secret']
 }
 
 # 判断为真实身份证照片的阈值

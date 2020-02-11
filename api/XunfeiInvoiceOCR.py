@@ -14,12 +14,12 @@ import json
 import hashlib
 import base64
 
-from api import Config
+import config
 
 
 OCR_API_CONFIG = {
-    'appid': Config.xunfei['invoice']['appid'],
-    'api_key': Config.xunfei['invoice']['api_key']
+    'appid': config.xunfei['invoice']['appid'],
+    'api_key': config.xunfei['invoice']['api_key']
 }
 
 # 发票字段名称

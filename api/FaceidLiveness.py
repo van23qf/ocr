@@ -7,12 +7,13 @@ import requests
 import json
 import hashlib
 from flask import Flask, request
-from api import Config, func
+import config
+from api import func
 
 
 OCR_API_CONFIG = {
-    'api_key': Config.faceid['idcard']['api_key'],
-    'api_secret': Config.faceid['idcard']['api_secret']
+    'api_key': config.faceid['idcard']['api_key'],
+    'api_secret': config.faceid['idcard']['api_secret']
 }
 
 

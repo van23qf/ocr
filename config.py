@@ -1,3 +1,12 @@
+db = {
+    'default':  {
+        'host': '127.0.0.1',
+        'port': '3306',
+        'dbuser': 'root',
+        'dbpass': '123456',
+        'dbname': 'papai',
+    }
+}
 tencent = {
     'idcard':  {
         'secretid': 'AKID96rMeho9uQiqjRvCI8C3f6esstjMjFZi',

@@ -37,7 +37,7 @@ from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.ocr.v20181119 import ocr_client, models
 
-from api import Config
+import config
 
 WarnInfosDict = {
     -9100: '身份证有效日期不合法告警',
@@ -72,7 +72,7 @@ def get_warns(resp):
 def ocr(file, side='front'):
     idcardfile_base64 = str(base64.b64encode(file), 'utf-8')
     try:
-        cred = credential.Credential(Config.tencent['idcard']['secretid'], Config.tencent['idcard']['secretkey'])
+        cred = credential.Credential(config.tencent['idcard']['secretid'], config.tencent['idcard']['secretkey'])
         httpProfile = HttpProfile()
         httpProfile.endpoint = "ocr.tencentcloudapi.com"
 

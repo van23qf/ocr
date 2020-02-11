@@ -15,15 +15,15 @@ import hashlib
 import base64
 import json
 
-from api import Config
+import config
 
 
 # 身份证识别接口接入地址
 URL = "http://webapi.xfyun.cn/v1/service/v1/ocr/idcard"
 # 应用APPID（必须为webapi类型应用，并开通身份证识别服务，参考帖子如何创建一个webapi应用：http://bbs.xfyun.cn/forum.php?mod=viewthread&tid=36481）
-APPID = Config.xunfei['idcard']['appid']
+APPID = config.xunfei['idcard']['appid']
 # 接口密钥（webapi类型应用开通身份证识别服务后，控制台--我的应用---身份证识别---相应服务的apikey）
-API_KEY = Config.xunfei['idcard']['api_key']
+API_KEY = config.xunfei['idcard']['api_key']
 
 
 def getHeader():

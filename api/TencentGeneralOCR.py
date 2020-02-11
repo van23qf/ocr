@@ -18,13 +18,13 @@ from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.ocr.v20181119 import ocr_client, models
 
-from api import Config
+import config
 
 def ocr(file):
     try:
         idcardfile_base64 = str(base64.b64encode(file), 'utf-8')
 
-        cred = credential.Credential(Config.tencent['general']['secretid'], Config.tencent['general']['secretkey'])
+        cred = credential.Credential(config.tencent['general']['secretid'], config.tencent['general']['secretkey'])
         httpProfile = HttpProfile()
         httpProfile.endpoint = "ocr.tencentcloudapi.com"
 
