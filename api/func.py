@@ -5,6 +5,7 @@
 import base64
 from datetime import datetime
 from system.model import ApiLog
+from system import db
 
 
 def read_file(file_path):
@@ -36,3 +37,15 @@ def save_api_log(api_name, result, project, api_provider):
     apilog.result = result
     apilog.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     apilog.insert()
+
+
+def get_api_config(api_name, project, api_provider):
+    """
+    获取api配置
+    :param api_name:
+    :param project:
+    :param api_provider:
+    :return:
+    """
+    sql = "select * from api_config where api_name='{api_name}' and project='{project}' and api_provider='{api_provider}'"
+    return db.get_one(sql.format(api_name=api_name, project=project, api_provider=api_provider))
