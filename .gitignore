@@ -1,4 +1,6 @@
 .idea
+__pycache__
 /uploads
 /venv
 /api/__pycache__
+/system/__pycache__
