@@ -6,7 +6,7 @@ from api import FaceidIdcardOCR, TencentIdcardOCR, XunfeiIdcardOCR
 from api import TencentInvoiceOCR, XunfeiInvoiceOCR
 from api import XunfeiGeneralOCR, TencentGeneralOCR
 
-from api import func
+from system import func
 
 
 def idcard_ocr(file_path, side='front', api='faceid'):

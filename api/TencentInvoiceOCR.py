@@ -19,12 +19,13 @@ from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.ocr.v20181119 import ocr_client, models
 
-import config
+import global_dict
 
 def ocr(file):
     try:
+        api_config = global_dict.get_value("api_config")
         invoicefile_base64 = str(base64.b64encode(file), 'utf-8')
-        cred = credential.Credential(config.tencent['invoice']['secretid'], config.tencent['invoice']['secretkey'])
+        cred = credential.Credential(api_config['appid'], api_config['appsecret'])
         httpProfile = HttpProfile()
         httpProfile.endpoint = "ocr.tencentcloudapi.com"
 
@@ -46,28 +47,28 @@ def ocr(file):
         data = {}
         for v in resp['VatInvoiceInfos']:
             if v['Name'] == '货物或应税劳务、服务名称':
-                data['drug_name'] = v['Value']
+                data['goods_name'] = v['Value']
             if v['Name'] == '购买方名称':
-                data['patient_name'] = v['Value']
+                data['payer_name'] = v['Value']
             if v['Name'] == '数量':
-                data['drug_num'] = v['Value']
+                data['goods_num'] = v['Value']
             if v['Name'] == '单位':
-                data['drug_unit'] = v['Value']
+                data['goods_unit'] = v['Value']
             if v['Name'] == '开票日期':
-                data['invoice_date'] = v['Value']
+                data['issue_date'] = v['Value']
             if v['Name'] == '发票号码':
-                data['invoice_sn'] = v['Value']
+                data['invoice_number'] = v['Value']
             if v['Name'] == '金额':
                 data['invoice_amount'] = v['Value']
             if v['Name'] == '单价':
                 data['invoice_unit_price'] = v['Value']
         return {'status': True, 'data': data}
     except TencentCloudSDKException as err:
-        return {'status': False, 'msg': err}
+        return {'status': False, 'msg': str(err)}
 
 
 if __name__ == '__main__':
-    result = ocr('../uploads/idcard_front.jpg')
+    result = ocr('./uploads/invoice.jpg')
     print(result)
 
 """

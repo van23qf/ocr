@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from api import call, func
+from api import call
 from system import db
-from system import Redis
+from system import Redis, func
 
 import json
 #import sqlalchemy.engine.result.ResultProxy

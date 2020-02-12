@@ -15,12 +15,8 @@ import hashlib
 import base64
 
 import config
+import global_dict
 
-
-OCR_API_CONFIG = {
-    'appid': config.xunfei['invoice']['appid'],
-    'api_key': config.xunfei['invoice']['api_key']
-}
 
 # 发票字段名称
 INVOICE_FIELDS = {
@@ -59,8 +55,9 @@ INVOICE_FIELDS = {
 class InvoiceOCR(object):
 
     def __init__(self):
-        self.appid = OCR_API_CONFIG['appid']
-        self.api_key = OCR_API_CONFIG['api_key']
+        api_config = global_dict.get_value("api_config")
+        self.appid = api_config['appid']
+        self.api_key = api_config['appsecret']
         self.api_url = 'http://webapi.xfyun.cn/v1/service/v1/ocr/invoice'
         self.set_header()
 
@@ -95,12 +92,12 @@ class InvoiceOCR(object):
         return {
             'status': True,
             'data': {
-                'drug_name': result['data']['vat_invoice_goods_list'],  # 药品名称
-                'patient_name': result['data']['vat_invoice_payer_name'],  # 购药人
-                'drug_unit': '',  # 药品单位
-                'drug_num': result['data']['vat_invoice_electrans_quantity'],  # 药品数量
-                'invoice_date': result['data']['vat_invoice_issue_date'],  # 结算日期
-                'invoice_sn': result['data']['vat_invoice_haoma'],  # 发票号码
+                'goods_name': result['data']['vat_invoice_goods_list'],  # 药品名称
+                'payer_name': result['data']['vat_invoice_payer_name'],  # 购药人
+                'goods_unit': '',  # 药品单位
+                'goods_num': result['data']['vat_invoice_electrans_quantity'],  # 药品数量
+                'issue_date': result['data']['vat_invoice_issue_date'],  # 结算日期
+                'invoice_number': result['data']['vat_invoice_haoma'],  # 发票号码
                 'invoice_amount': result['data']['vat_invoice_total'],  # 金额
                 'invoice_unit_price': result['data']['vat_invoice_electrans_unit_price'],  # 单价
             }

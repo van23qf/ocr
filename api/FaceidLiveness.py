@@ -8,7 +8,7 @@ import json
 import hashlib
 from flask import Flask, request
 import config
-from api import func
+from system import func
 
 
 OCR_API_CONFIG = {

@@ -48,7 +48,7 @@ def get_api_config(api_name, project, api_provider):
     :return:
     """
     r = Redis.Redis()
-    api_config_key = project + ':api_config'
+    api_config_key = project + ':api_config:' + api_name + ':' + api_name
     api_config_json = r.get(api_config_key)
     if not api_config_json:
         sql = "select * from api_config where api_name='{api_name}' and project='{project}' and api_provider='{api_provider}'"
