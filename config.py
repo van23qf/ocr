@@ -7,6 +7,13 @@ db = {
         'dbname': 'papai',
     }
 }
+redis = {
+    'default':  {
+        'host': '127.0.0.1',
+        'port': '6379',
+        'password': '',
+    }
+}
 tencent = {
     'idcard':  {
         'secretid': 'AKID96rMeho9uQiqjRvCI8C3f6esstjMjFZi',

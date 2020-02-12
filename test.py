@@ -3,9 +3,13 @@
 
 from api import call, func
 from system import db
+from system import Redis
 
 import json
 #import sqlalchemy.engine.result.ResultProxy
 
-result = db.get_one("select * from api_log where id=3")
-print(result)
+
+r = Redis.Redis()
+r.set('name', 'qinfan')
+print(r.get('name'))
+

@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 
-import base64
+import base64, json
 from datetime import datetime
 from system.model import ApiLog
-from system import db
+from system import db, Redis
 
 
 def read_file(file_path):
@@ -47,5 +47,13 @@ def get_api_config(api_name, project, api_provider):
     :param api_provider:
     :return:
     """
-    sql = "select * from api_config where api_name='{api_name}' and project='{project}' and api_provider='{api_provider}'"
-    return db.get_one(sql.format(api_name=api_name, project=project, api_provider=api_provider))
+    r = Redis.Redis()
+    api_config_key = project + ':api_config'
+    api_config_json = r.get(api_config_key)
+    if not api_config_json:
+        sql = "select * from api_config where api_name='{api_name}' and project='{project}' and api_provider='{api_provider}'"
+        api_config = db.get_one(sql.format(api_name=api_name, project=project, api_provider=api_provider))
+        r.set(api_config_key, json.dumps(api_config))
+    else:
+        api_config = json.loads(api_config_json)
+    return api_config
