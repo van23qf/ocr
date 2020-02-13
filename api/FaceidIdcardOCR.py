@@ -22,22 +22,18 @@ import requests
 import json
 import base64
 
-import config
+import global_dict
 
-
-OCR_API_CONFIG = {
-    'api_key': config.faceid['idcard']['api_key'],
-    'api_secret': config.faceid['idcard']['api_secret']
-}
 
 # 判断为真实身份证照片的阈值
 ID_Photo_Threshold = 0.6
 
 
 def ocr(file, side='front'):
+    api_config = global_dict.get_value("api_config")
     data = {
-        'api_key': OCR_API_CONFIG['api_key'],
-        'api_secret': OCR_API_CONFIG['api_secret'],
+        'api_key': api_config['appid'],
+        'api_secret': api_config['appsecret'],
         # 传1时返回头像
         'return_portrait': '0',
     }

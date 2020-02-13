@@ -7,14 +7,8 @@ import requests
 import json
 import hashlib
 from flask import Flask, request
-import config
+import global_dict
 from system import func
-
-
-OCR_API_CONFIG = {
-    'api_key': config.faceid['idcard']['api_key'],
-    'api_secret': config.faceid['idcard']['api_secret']
-}
 
 
 def get_randstr(len):
@@ -26,14 +20,15 @@ def get_randstr(len):
 
 
 def get_token(idcard_name, idcard_number, **kw):
+    api_config = global_dict.get_value("api_config")
     data = {
-        'api_key': OCR_API_CONFIG['api_key'],
-        'api_secret': OCR_API_CONFIG['api_secret'],
+        'api_key': api_config['appid'],
+        'api_secret': api_config['appsecret'],
         'comparison_type': "1",
         'idcard_name': idcard_name,
         'idcard_number': idcard_number,
-        'return_url': 'https://www.qfcoder.com/open/faceid',
-        'notify_url': 'https://www.qfcoder.com/open/faceid',
+        'return_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, project=api_config['project'], api_provider=api_config['api_provider']),
+        'notify_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, project=api_config['project'], api_provider=api_config['api_provider']),
         'biz_no': get_randstr(10),
         'biz_extra_data': '',
     }
@@ -51,15 +46,16 @@ def get_token(idcard_name, idcard_number, **kw):
     return result['token']
 
 
-def url(idcard_name, idcard_number, face_pic):
-    token = get_token(idcard_name, idcard_number, image_ref1=face_pic)
+def url(idcard_name, idcard_number, file):
+    token = get_token(idcard_name, idcard_number, image_ref1=file)
     return 'https://api.megvii.com/faceid/liveness/v2/do?token=' + token
 
 
 def callback():
+    api_config = global_dict.get_value("api_config")
     data_json = request.form.get('data')
     outsign = request.form.get('sign')
-    sign_str = OCR_API_CONFIG['api_secret'] + data_json
+    sign_str = api_config['appsecret'] + data_json
     sign = hashlib.sha1(sign_str.encode("utf-8")).hexdigest()
     if sign != outsign:
         raise Exception('签名错误')
@@ -83,7 +79,7 @@ def callback():
             raise Exception('用户在活体做动作时中断了网页端活体检测')
         else:
             raise Exception('活体检测结果未知')
-    return True
+    return {'status': True, 'msg': 'success'}
 
 
 if __name__ == '__main__':

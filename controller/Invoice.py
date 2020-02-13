@@ -17,7 +17,6 @@ def index():
     api_config = func.get_api_config('invoice', project, api_provider)
     if not api_config:
         raise Exception('配置错误')
-    global_dict.set_value("project", project)
     global_dict.set_value("api_config", api_config)
     file = func.read_file(file_name)
     if not file:

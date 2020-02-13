@@ -32,6 +32,24 @@ def invoice():
         return json.dumps({'status': False, 'msg': str(e)})
 
 
+@app.route('/liveness/url', methods=['POST'])
+def liveness_url():
+    from controller import Liveness
+    try:
+        return json.dumps(Liveness.url())
+    except Exception as e:
+        return json.dumps({'status': False, 'msg': str(e)})
+
+
+@app.route('/liveness/faceid/callback', methods=['POST'])
+def liveness_faceid_callback():
+    from controller import Liveness
+    try:
+        return json.dumps(Liveness.faceid_callback())
+    except Exception as e:
+        return json.dumps({'status': False, 'msg': str(e)})
+
+
 if __name__ == '__main__':
     app.run(port=5000)
 
