@@ -3,7 +3,6 @@
 
 import json
 from flask import Flask, request
-from api import call
 from system import func
 import global_dict
 
@@ -18,36 +17,36 @@ global_dict.init()
 def idcard():
     from controller import Idcard
     try:
-        return json.dumps(Idcard.index())
+        return Idcard.index()
     except Exception as e:
-        return json.dumps({'status': False, 'msg': str(e)})
+        return {'status': False, 'msg': str(e)}
 
 
 @app.route('/invoice', methods=['POST'])
 def invoice():
     from controller import Invoice
     try:
-        return json.dumps(Invoice.index())
+        return Invoice.index()
     except Exception as e:
-        return json.dumps({'status': False, 'msg': str(e)})
+        return {'status': False, 'msg': str(e)}
 
 
 @app.route('/liveness/url', methods=['POST'])
 def liveness_url():
     from controller import Liveness
     try:
-        return json.dumps(Liveness.url())
+        return Liveness.url()
     except Exception as e:
-        return json.dumps({'status': False, 'msg': str(e)})
+        return {'status': False, 'msg': str(e)}
 
 
 @app.route('/liveness/faceid/callback', methods=['POST'])
 def liveness_faceid_callback():
     from controller import Liveness
     try:
-        return json.dumps(Liveness.faceid_callback())
+        return Liveness.faceid_callback()
     except Exception as e:
-        return json.dumps({'status': False, 'msg': str(e)})
+        return {'status': False, 'msg': str(e)}
 
 
 if __name__ == '__main__':
