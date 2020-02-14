@@ -7,7 +7,7 @@ import requests
 import json
 import hashlib
 from flask import Flask, request
-import global_dict
+from system import global_dict
 from system import func
 
 

@@ -15,7 +15,7 @@ import hashlib
 import base64
 import json
 
-import global_dict
+from system import global_dict
 
 
 # 身份证识别接口接入地址

@@ -7,7 +7,7 @@ import base64, json
 from api import TencentInvoiceOCR, XunfeiInvoiceOCR
 
 from system import func
-import global_dict
+from system import global_dict
 
 
 def index():

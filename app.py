@@ -4,7 +4,7 @@
 import json
 from flask import Flask, request
 from system import func
-import global_dict
+from system import global_dict
 
 app = Flask(__name__, static_folder='uploads')
 app.config['ENV'] = 'development'

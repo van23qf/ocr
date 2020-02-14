@@ -14,8 +14,8 @@ import json
 import hashlib
 import base64
 
-import config
-import global_dict
+from config import config
+from system import global_dict
 
 
 # 发票字段名称

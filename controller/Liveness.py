@@ -7,7 +7,7 @@ import base64, json
 from api import FaceidLiveness
 
 from system import func
-import global_dict
+from system import global_dict
 
 
 def url():

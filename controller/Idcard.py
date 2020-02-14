@@ -6,7 +6,7 @@ import base64, json
 from api import FaceidIdcardOCR, TencentIdcardOCR, XunfeiIdcardOCR
 
 from system import func
-import global_dict
+from system import global_dict
 
 
 def index():

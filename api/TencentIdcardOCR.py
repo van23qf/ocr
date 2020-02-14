@@ -37,7 +37,7 @@ from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.ocr.v20181119 import ocr_client, models
 
-import global_dict
+from system import global_dict
 
 
 WarnInfosDict = {

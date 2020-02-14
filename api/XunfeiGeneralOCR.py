@@ -15,7 +15,7 @@ import hashlib
 import base64
 import json
 
-import config
+from config import config
 
 
 # 印刷文字识别 webapi 接口地址

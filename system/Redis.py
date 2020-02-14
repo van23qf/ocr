@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import redis
-import config
+from config import config
 
 
 class Redis():

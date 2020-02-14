@@ -22,7 +22,7 @@ import requests
 import json
 import base64
 
-import global_dict
+from system import global_dict
 
 
 # 判断为真实身份证照片的阈值
