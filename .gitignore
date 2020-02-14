@@ -6,3 +6,4 @@ __pycache__
 /system/__pycache__
 /controller/__pycache__
 /test.py
+/config.py
