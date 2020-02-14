@@ -5,6 +5,7 @@ import json
 from flask import Flask, request
 from system import func
 from system import global_dict
+from config import config
 
 app = Flask(__name__, static_folder='uploads')
 app.config['ENV'] = 'development'
@@ -50,5 +51,5 @@ def liveness_faceid_callback():
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=config.port)
 
