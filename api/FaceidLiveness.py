@@ -31,8 +31,8 @@ def get_token(idcard_name, idcard_number, **kw):
         'comparison_type': "1",
         'idcard_name': idcard_name,
         'idcard_number': idcard_number,
-        'return_url': 'http://{host}:{port}/liveness/faceid/return?project={project}&api_provider={api_provider}'.format(host=request.host, port=config.port, project=api_config['project'], api_provider=api_config['api_provider']),
-        'notify_url': 'http://{host}:{port}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, port=config.port, project=api_config['project'], api_provider=api_config['api_provider']),
+        'return_url': 'http://{host}/liveness/faceid/return?project={project}&api_provider={api_provider}'.format(host=config.server_name, project=api_config['project'], api_provider=api_config['api_provider']),
+        'notify_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=config.server_name, project=api_config['project'], api_provider=api_config['api_provider']),
         'biz_no': nonce_str,
         'biz_extra_data': '',
     }
