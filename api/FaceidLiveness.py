@@ -67,7 +67,7 @@ def callback():
     liveness_callback = LivenessCallback.Model()
     liveness_callback.nonce_str = nonce_str
     liveness_callback.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+    func.save_file_log('./log/liveness_callback.log', "faceid\r\n")
     if sign != outsign:
         raise Exception('签名错误')
     # 活体检测结果

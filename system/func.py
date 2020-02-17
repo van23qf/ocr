@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import base64, json
+import base64, json, os
 from datetime import datetime
 from system.model import ApiLog
 from system import db, Redis
@@ -61,3 +61,17 @@ def get_api_config(api_name, project, api_provider):
     # else:
     #     api_config = json.loads(api_config_json)
     # return api_config
+
+
+def save_file_log(file_name, content, mode='a'):
+    """
+    记录文本
+    :param file_name:
+    :param content:
+    :param mode:
+    """
+    file_path = os.path.dirname(file_name)
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
+    with open(file_name, mode) as f:
+        f.write(content)
