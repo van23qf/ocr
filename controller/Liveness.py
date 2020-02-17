@@ -27,8 +27,7 @@ def url():
         result = FaceidLiveness.url(idcard_name, idcard_number, file)
     else:
         raise Exception('接口未知')
-    func.save_api_log('liveness', result, project, api_provider)
-    return {'status': True, 'msg': 'success', 'data': {'url': result}}
+    return {'status': True, 'msg': 'success', 'data': {'url': result['url'], 'nonce_str': result['nonce_str']}}
 
 
 def faceid_callback():

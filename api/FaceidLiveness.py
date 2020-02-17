@@ -6,9 +6,11 @@ import random
 import requests
 import json
 import hashlib
+from datetime import datetime
 from flask import Flask, request
 from system import global_dict
 from system import func
+from system.model import LivenessCallback
 
 
 def get_randstr(len):
@@ -21,6 +23,7 @@ def get_randstr(len):
 
 def get_token(idcard_name, idcard_number, **kw):
     api_config = global_dict.get_value("api_config")
+    nonce_str = get_randstr(16)
     data = {
         'api_key': api_config['appid'],
         'api_secret': api_config['appsecret'],
@@ -29,7 +32,7 @@ def get_token(idcard_name, idcard_number, **kw):
         'idcard_number': idcard_number,
         'return_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, project=api_config['project'], api_provider=api_config['api_provider']),
         'notify_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, project=api_config['project'], api_provider=api_config['api_provider']),
-        'biz_no': get_randstr(10),
+        'biz_no': nonce_str,
         'biz_extra_data': '',
     }
     image_file = {}
@@ -41,14 +44,16 @@ def get_token(idcard_name, idcard_number, **kw):
         image_file['image_ref3'] = kw.get('image_ref3')
     response = requests.post('https://api.megvii.com/faceid/liveness/v2/get_token', data=data, files=image_file)
     result = json.loads(response.text)
+    log_id = func.save_api_log('liveness', json.dumps(result), api_config['project'], api_config['api_provider'], nonce_str)
     if not result.get('token'):
         raise Exception('token获取失败')
-    return result['token']
+    return {'token': result['token'], 'log_id': log_id, 'nonce_str': nonce_str}
 
 
 def url(idcard_name, idcard_number, file):
-    token = get_token(idcard_name, idcard_number, image_ref1=file)
-    return 'https://api.megvii.com/faceid/liveness/v2/do?token=' + token
+    result = get_token(idcard_name, idcard_number, image_ref1=file)
+    url = 'https://api.megvii.com/faceid/liveness/v2/do?token=' + result['token']
+    return {'url': url, 'nonce_str': result['nonce_str']}
 
 
 def callback():
@@ -57,28 +62,38 @@ def callback():
     outsign = request.form.get('sign')
     sign_str = api_config['appsecret'] + data_json
     sign = hashlib.sha1(sign_str.encode("utf-8")).hexdigest()
+    data = json.loads(data_json)
+    nonce_str = data['biz_no']
+    liveness_callback = LivenessCallback.Model()
+    liveness_callback.nonce_str = nonce_str
+    liveness_callback.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
     if sign != outsign:
         raise Exception('签名错误')
-    data = json.loads(data_json)
     # 活体检测结果
+    liveness_result_fail = None
     if data['liveness_result']['result'] != 'success':
         failure_reason = data['liveness_result']['result']
         if failure_reason.get('action_mixed'):
-            raise Exception('做了错误的动作')
+            liveness_result_fail = '做了错误的动作'
         elif failure_reason.get('not_video'):
-            raise Exception('检测到活体攻击')
+            liveness_result_fail = '检测到活体攻击'
         elif failure_reason.get('timeout'):
-            raise Exception('活体动作超时')
+            liveness_result_fail = '活体动作超时'
         elif failure_reason.get('quality_check_timeout'):
-            raise Exception('照镜子流程超时（120秒）')
+            liveness_result_fail = '照镜子流程超时（120秒）'
         elif failure_reason.get('no_input_frame'):
-            raise Exception('视频流输入中断')
+            liveness_result_fail = '视频流输入中断'
         elif failure_reason.get('interrupt_in_mirro_state'):
-            raise Exception('用户在照镜子流程中断了网页端活体检测')
+            liveness_result_fail = '用户在照镜子流程中断了网页端活体检测'
         elif failure_reason.get('interrupt_in_action_state'):
-            raise Exception('用户在活体做动作时中断了网页端活体检测')
+            liveness_result_fail = '用户在活体做动作时中断了网页端活体检测'
         else:
-            raise Exception('活体检测结果未知')
+            liveness_result_fail = '活体检测结果未知'
+    if liveness_result_fail:
+        liveness_callback.check_status = 0
+    liveness_callback.check_status = 1
+    liveness_callback.insert()
     return {'status': True, 'msg': 'success'}
 
 

@@ -14,16 +14,14 @@ DBSession = db.DBSession
 
 class Model(Base):
     # 表的名字:
-    __tablename__ = 'api_log'
+    __tablename__ = 'liveness_callback'
     db_session = DBSession()
 
     # 表的结构:
     id = Column(Integer, primary_key=True, autoincrement=True)
-    project = Column(String(16))
-    api_provider = Column(String(16))
-    api_name = Column(String(16))
-    result = Column(Text())
     nonce_str = Column(String(32))
+    result = Column(Text())
+    check_status = Column(Integer)
     created = Column(DateTime())
 
     def insert(self):

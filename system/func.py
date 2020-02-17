@@ -22,7 +22,7 @@ def read_file(file_path):
         return False
 
 
-def save_api_log(api_name, result, project, api_provider):
+def save_api_log(api_name, result, project, api_provider, nonce_str=''):
     """
     记录api调用日志
     :param api_name:
@@ -35,8 +35,9 @@ def save_api_log(api_name, result, project, api_provider):
     apilog.api_provider = api_provider
     apilog.api_name = api_name
     apilog.result = result
+    apilog.nonce_str = nonce_str
     apilog.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    apilog.insert()
+    return apilog.insert()
 
 
 def get_api_config(api_name, project, api_provider):
