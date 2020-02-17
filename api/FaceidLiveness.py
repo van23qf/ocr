@@ -68,6 +68,7 @@ def callback():
     nonce_str = data['biz_no']
     liveness_callback = LivenessCallback.Model()
     liveness_callback.nonce_str = nonce_str
+    liveness_callback.result = data_json
     liveness_callback.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     if sign != outsign:
         raise Exception('签名错误')

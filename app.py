@@ -50,7 +50,7 @@ def liveness_faceid_callback():
         return {'status': False, 'msg': str(e)}
 
 
-@app.route('/liveness/faceid/return', methods=['GET'])
+@app.route('/liveness/faceid/return', methods=['GET', 'POST'])
 def liveness_faceid_return():
     return "检测完成"
 
