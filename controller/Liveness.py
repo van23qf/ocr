@@ -34,7 +34,6 @@ def faceid_callback():
     project = request.args.get('project')
     api_provider = request.args.get('api_provider')
     api_config = func.get_api_config('liveness', project, api_provider)
-    func.save_file_log('./log/liveness_callback.log', "faceid_callback\r\n")
     if not api_config:
         raise Exception('配置错误')
     global_dict.set_value("api_config", api_config)

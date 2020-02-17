@@ -10,6 +10,7 @@ from datetime import datetime
 from flask import Flask, request
 from system import global_dict
 from system import func
+from config import config
 from system.model import LivenessCallback
 
 
@@ -30,8 +31,8 @@ def get_token(idcard_name, idcard_number, **kw):
         'comparison_type': "1",
         'idcard_name': idcard_name,
         'idcard_number': idcard_number,
-        'return_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, project=api_config['project'], api_provider=api_config['api_provider']),
-        'notify_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, project=api_config['project'], api_provider=api_config['api_provider']),
+        'return_url': 'http://{host}:{port}/liveness/faceid/return?project={project}&api_provider={api_provider}'.format(host=request.host, port=config.port, project=api_config['project'], api_provider=api_config['api_provider']),
+        'notify_url': 'http://{host}:{port}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=request.host, port=config.port, project=api_config['project'], api_provider=api_config['api_provider']),
         'biz_no': nonce_str,
         'biz_extra_data': '',
     }
@@ -46,6 +47,7 @@ def get_token(idcard_name, idcard_number, **kw):
     result = json.loads(response.text)
     log_id = func.save_api_log('liveness', json.dumps(result), api_config['project'], api_config['api_provider'], nonce_str)
     if not result.get('token'):
+        print(data)
         raise Exception('token获取失败')
     return {'token': result['token'], 'log_id': log_id, 'nonce_str': nonce_str}
 
@@ -67,7 +69,6 @@ def callback():
     liveness_callback = LivenessCallback.Model()
     liveness_callback.nonce_str = nonce_str
     liveness_callback.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    func.save_file_log('./log/liveness_callback.log', "faceid\r\n")
     if sign != outsign:
         raise Exception('签名错误')
     # 活体检测结果
