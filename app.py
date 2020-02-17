@@ -41,6 +41,15 @@ def liveness_url():
         return {'status': False, 'msg': str(e)}
 
 
+@app.route('/liveness/result_check', methods=['POST'])
+def liveness_result_check():
+    from controller import Liveness
+    try:
+        return Liveness.result_check()
+    except Exception as e:
+        return {'status': False, 'msg': str(e)}
+
+
 @app.route('/liveness/faceid/callback', methods=['POST'])
 def liveness_faceid_callback():
     from controller import Liveness

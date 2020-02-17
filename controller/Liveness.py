@@ -8,6 +8,7 @@ from api import FaceidLiveness
 
 from system import func
 from system import global_dict
+from system import db
 
 
 def url():
@@ -28,6 +29,19 @@ def url():
     else:
         raise Exception('接口未知')
     return {'status': True, 'msg': 'success', 'data': {'url': result['url'], 'nonce_str': result['nonce_str']}}
+
+
+def result_check():
+    nonce_str = request.form.get('nonce_str')
+    if not nonce_str:
+        raise Exception('参数错误')
+    sql = "select * from liveness_callback where nonce_str='{nonce_str}'".format(nonce_str=nonce_str)
+    result = db.get_one(sql)
+    if not result:
+        raise Exception('不存在的nonce_str')
+    if result['check_status'] != 1:
+        raise Exception('检测失败')
+    return {'status': True, 'msg': 'success'}
 
 
 def faceid_callback():
