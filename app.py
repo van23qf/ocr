@@ -18,6 +18,7 @@ global_dict.init()
 def idcard():
     from controller import Idcard
     try:
+        func.check_api_access('idcard')
         return Idcard.index()
     except Exception as e:
         return {'status': False, 'msg': str(e)}
@@ -27,6 +28,7 @@ def idcard():
 def invoice():
     from controller import Invoice
     try:
+        func.check_api_access('invoice')
         return Invoice.index()
     except Exception as e:
         return {'status': False, 'msg': str(e)}
@@ -36,6 +38,7 @@ def invoice():
 def liveness_url():
     from controller import Liveness
     try:
+        func.check_api_access('liveness')
         return Liveness.url()
     except Exception as e:
         return {'status': False, 'msg': str(e)}

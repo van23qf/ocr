@@ -2,10 +2,23 @@
 # -*- coding: utf-8 -*-
 
 
-import base64, json, os
+import base64, json, os, hashlib
 from datetime import datetime
-from system.model import ApiLog
+from system.model import ApiLog, Project
 from system import db, Redis
+
+from flask import Flask, request
+
+
+def md5(str):
+    """
+    字符串md5加密
+    :param str:
+    :return:
+    """
+    m = hashlib.md5()
+    m.update(str.encode("utf8"))
+    return m.hexdigest()
 
 
 def read_file(file_path):
@@ -75,3 +88,21 @@ def save_file_log(file_name, content, mode='a'):
         os.makedirs(file_path)
     with open(file_name, mode) as f:
         f.write(content)
+
+
+def check_api_access(api_name):
+    """
+    检测api权限
+    :param project_name:
+    :param api_name:
+    """
+    project_name = request.headers.get('project_name')
+    ts = request.headers.get('ts')
+    out_signature = request.headers.get('signature')
+    if not project_name or not ts or not out_signature:
+        raise Exception("签名参数不全")
+    project = Project.Model()
+    if not project.check_project_verify(project_name, ts, out_signature):
+        raise Exception("签名错误")
+    if not project.check_api_access(project_name, api_name):
+        raise Exception("项目没有API权限")
