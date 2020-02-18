@@ -69,7 +69,7 @@ def liveness_faceid_return():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    print(str(request.headers))
+    return str(request.headers)
 
 
 if __name__ == '__main__':
