@@ -67,6 +67,11 @@ def liveness_faceid_return():
     return "检测完成"
 
 
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    print(str(request.headers))
+
+
 if __name__ == '__main__':
     app.run(port=config.port)
 
