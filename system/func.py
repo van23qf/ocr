@@ -96,6 +96,7 @@ def check_api_access(api_name):
     :param project_name:
     :param api_name:
     """
+    print(str(request.headers))
     project_name = request.headers.get('project_name')
     ts = request.headers.get('ts')
     out_signature = request.headers.get('signature')
