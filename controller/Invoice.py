@@ -11,7 +11,7 @@ from system import global_dict
 
 
 def index():
-    project = request.form.get('project')
+    project = request.headers.get('project_name')
     file = base64.b64decode(request.form.get('file'))
     api_provider = request.form.get('api_provider')
     api_config = func.get_api_config('invoice', project, api_provider)
