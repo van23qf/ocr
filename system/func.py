@@ -96,9 +96,9 @@ def check_api_access(api_name):
     :param project_name:
     :param api_name:
     """
-    project_name = request.headers.get('project_name')
-    ts = request.headers.get('ts')
-    out_signature = request.headers.get('signature')
+    project_name = request.headers.get('Project-Name')
+    ts = request.headers.get('Ts')
+    out_signature = request.headers.get('Signature')
     if not project_name or not ts or not out_signature:
         raise Exception("签名参数不全")
     project = Project.Model()

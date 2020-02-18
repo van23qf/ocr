@@ -14,7 +14,7 @@ from system import db
 def url():
     idcard_name = request.form.get('idcard_name')
     idcard_number = request.form.get('idcard_number')
-    project = request.headers.get('project_name')
+    project = request.headers.get('Project-Name')
     file = base64.b64decode(request.form.get('file'))
     api_provider = request.form.get('api_provider')
     api_config = func.get_api_config('liveness', project, api_provider)
