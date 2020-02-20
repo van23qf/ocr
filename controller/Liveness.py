@@ -17,6 +17,8 @@ def url():
     project = request.headers.get('Project-Name')
     file = base64.b64decode(request.form.get('file'))
     api_provider = request.form.get('api_provider')
+    if not api_provider or not file or not project or not idcard_name or not idcard_number:
+        raise Exception('参数不全')
     api_config = func.get_api_config('liveness', project, api_provider)
     if not api_config:
         raise Exception('配置错误')
