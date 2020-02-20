@@ -4,6 +4,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import InvalidRequestError
 
 from system import db
 
@@ -27,10 +28,13 @@ class Model(Base):
     created = Column(DateTime())
 
     def insert(self):
-        self.db_session.add(self)
-        self.db_session.flush()
-        insert_id = self.id
-        self.db_session.commit()
-        self.db_session.close()
-        return insert_id
-
+        try:
+            self.db_session.add(self)
+            self.db_session.flush()
+            insert_id = self.id
+            self.db_session.commit()
+            self.db_session.close()
+            return insert_id
+        except InvalidRequestError:
+            self.db_session.rollback()
+            raise Exception(str(InvalidRequestError))
