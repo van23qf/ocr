@@ -53,18 +53,18 @@ def liveness_result_check():
         return {'status': False, 'msg': str(e)}
 
 
-@app.route('/liveness/faceid/callback', methods=['POST'])
+@app.route('/liveness/faceid/callback', methods=['GET', 'POST'])
 def liveness_faceid_callback():
-    return "success"
-
-
-@app.route('/liveness/faceid/return', methods=['GET', 'POST'])
-def liveness_faceid_return():
     from controller import Liveness
     try:
         return Liveness.faceid_callback()
     except Exception as e:
         return {'status': False, 'msg': str(e)}
+
+
+@app.route('/liveness/faceid/return', methods=['GET', 'POST'])
+def liveness_faceid_return():
+    return "success"
 
 
 @app.route('/test', methods=['GET', 'POST'])

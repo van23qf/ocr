@@ -14,6 +14,7 @@ from system import db
 def url():
     idcard_name = request.form.get('idcard_name')
     idcard_number = request.form.get('idcard_number')
+    return_url = request.form.get('return_url')
     project = request.headers.get('Project-Name')
     file = base64.b64decode(request.form.get('file'))
     api_provider = request.form.get('api_provider')
@@ -27,7 +28,7 @@ def url():
     # if not file:
     #     raise Exception('文件读取失败')
     if api_provider == 'faceid':
-        result = FaceidLiveness.url(idcard_name, idcard_number, file)
+        result = FaceidLiveness.url(idcard_name, idcard_number, file, return_url)
     else:
         raise Exception('接口未知')
     return {'status': True, 'msg': 'success', 'data': {'url': result['url'], 'nonce_str': result['nonce_str']}}

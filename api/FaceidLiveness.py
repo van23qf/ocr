@@ -31,7 +31,7 @@ def get_token(idcard_name, idcard_number, **kw):
         'comparison_type': "1",
         'idcard_name': idcard_name,
         'idcard_number': idcard_number,
-        'return_url': 'http://{host}/liveness/faceid/return?project={project}&api_provider={api_provider}'.format(host=config.server_name, project=api_config['project'], api_provider=api_config['api_provider']),
+        'return_url': kw.get('return_url'),
         'notify_url': 'http://{host}/liveness/faceid/callback?project={project}&api_provider={api_provider}'.format(host=config.server_name, project=api_config['project'], api_provider=api_config['api_provider']),
         'biz_no': nonce_str,
         'biz_extra_data': '',
@@ -52,8 +52,8 @@ def get_token(idcard_name, idcard_number, **kw):
     return {'token': result['token'], 'log_id': log_id, 'nonce_str': nonce_str}
 
 
-def url(idcard_name, idcard_number, file):
-    result = get_token(idcard_name, idcard_number, image_ref1=file)
+def url(idcard_name, idcard_number, file, return_url):
+    result = get_token(idcard_name, idcard_number, image_ref1=file, return_url=return_url)
     url = 'https://api.megvii.com/faceid/liveness/v2/do?token=' + result['token']
     return {'url': url, 'nonce_str': result['nonce_str']}
 
