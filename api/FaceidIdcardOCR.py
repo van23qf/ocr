@@ -26,7 +26,7 @@ from system import global_dict
 
 
 # 判断为真实身份证照片的阈值
-ID_Photo_Threshold = 0.6
+ID_Photo_Threshold = 0.5
 
 
 def ocr(file, side='front'):
@@ -54,7 +54,7 @@ def ocr(file, side='front'):
             if result['legality']['ID_Photo'] >= ID_Photo_Threshold:
                 msg = '该身份证照片为真实拍摄的合法照片'
             else:
-                msg = '该身份证照片不合法'
+                msg = '该身份证照片不合法，请确认照片是否完整或PS'
     if side == 'front':
         if result['side'] == 1:
             return {'status': False, 'msg': '请上传人像正面'}
