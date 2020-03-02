@@ -16,7 +16,7 @@ engine = create_engine('mysql+mysqlconnector://'
                        + config.db['default']['dbpass'] + '@'
                        + config.db['default']['host'] + ':'
                        + config.db['default']['port'] + '/'
-                       + config.db['default']['dbname'] + '?charset=utf8')
+                       + config.db['default']['dbname'] + '?charset=utf8', pool_recycle=3600)
 DBSession = sessionmaker(bind=engine)
 db_session = scoped_session(DBSession)
 
