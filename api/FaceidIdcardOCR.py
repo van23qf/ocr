@@ -65,7 +65,7 @@ def ocr(file, side='front'):
                 'name': result['name']['result'],
                 'gender': result['gender']['result'],
                 'nation': result['nationality']['result'],
-                'birth': result['birth_year']['result'] + '/' + result['birth_month']['result'] + '/' + result['birth_day']['result'],
+                'birth': result['birth_year']['result'] + '-' + result['birth_month']['result'] + '-' + result['birth_day']['result'],
                 'address': result['address']['result'],
                 'idnum': result['idcard_number']['result'],
             }

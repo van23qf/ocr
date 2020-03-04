@@ -75,7 +75,7 @@ def ocr(file, side='front'):
                     'name': result['data']['name'],
                     'gender': result['data']['sex'],
                     'nation': result['data']['people'],
-                    'birth': result['data']['birthday'],
+                    'birth': result['data']['birthday'].replace('年', '-').replace('月', '-').replace('日', ''),
                     'address': result['data']['address'],
                     'idnum': result['data']['id_number'],
                 }

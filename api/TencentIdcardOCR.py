@@ -106,7 +106,7 @@ def ocr(file, side='front'):
                     'name': resp['Name'],
                     'gender': resp['Sex'],
                     'nation': resp['Nation'],
-                    'birth': resp['Birth'],
+                    'birth': resp['Birth'].replace('/', '-'),
                     'address': resp['Address'],
                     'idnum': resp['IdNum'],
                 }
