@@ -4,10 +4,6 @@
 """
     腾讯身份证OCR接口
     documents   https://cloud.tencent.com/document/product/866/33524#API-Explorer
-    APPID:1252569649
-    SecretId:AKID96rMeho9uQiqjRvCI8C3f6esstjMjFZi
-    SecretKey:3toZ7RmtlSv9EA0f8LNJ6i6MOYXHoQr5
-
 
     目前支持的扩展字段为：
     IdCard，身份证照片，请求 CropIdCard 时返回；
