@@ -43,7 +43,8 @@ def get_token(idcard_name, idcard_number, **kw):
         image_file['image_ref2'] = kw.get('image_ref2')
     if kw.get('image_ref3'):
         image_file['image_ref3'] = kw.get('image_ref3')
-    response = requests.post('https://api.megvii.com/faceid/liveness/v2/get_token', data=data, files=image_file)
+    #response = requests.post('https://api.megvii.com/faceid/liveness/v2/get_token', data=data, files=image_file)
+    response = requests.post('https://api.megvii.com/faceid/lite/get_token', data=data, files=image_file)
     result = json.loads(response.text)
     log_id = func.save_api_log('liveness', json.dumps(result), api_config['project'], api_config['api_provider'], nonce_str)
     if not result.get('token'):
@@ -54,7 +55,8 @@ def get_token(idcard_name, idcard_number, **kw):
 
 def url(idcard_name, idcard_number, file, return_url):
     result = get_token(idcard_name, idcard_number, image_ref1=file, return_url=return_url)
-    url = 'https://api.megvii.com/faceid/liveness/v2/do?token=' + result['token']
+    #url = 'https://api.megvii.com/faceid/liveness/v2/do?token=' + result['token']
+    url = 'https://api.megvii.com/faceid/lite/do?token=' + result['token']
     return {'url': url, 'nonce_str': result['nonce_str']}
 
 
