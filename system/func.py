@@ -106,3 +106,19 @@ def check_api_access(api_name):
         raise Exception("签名错误")
     if not project.check_api_access(project_name, api_name):
         raise Exception("项目没有API权限")
+
+
+def str_to_bytes(str):
+    """
+    字符串转bytes
+    :param str:
+    :return:
+    """
+    return bytes(str, 'utf-8')
+
+
+def sha1(str):
+    import hashlib
+    sha1 = hashlib.sha1()  # 可以根据不同的需要选取不同的函数，例如：sha256(), sha3_512() 等。
+    sha1.update(str.encode('utf-8'))
+    return sha1.hexdigest()

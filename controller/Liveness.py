@@ -34,6 +34,28 @@ def url():
     return {'status': True, 'msg': 'success', 'data': {'url': result['url'], 'nonce_str': result['nonce_str']}}
 
 
+def compare():
+    project = request.headers.get('Project-Name')
+    image1 = base64.b64decode(request.form.get('image1'))
+    image2 = base64.b64decode(request.form.get('image2'))
+    api_provider = request.form.get('api_provider')
+    if not api_provider or not project or not image1 or not image2:
+        raise Exception('参数不全')
+    api_config = func.get_api_config('liveness', project, api_provider)
+    if not api_config:
+        raise Exception('配置错误')
+    global_dict.set_value("api_config", api_config)
+    # file = func.read_file(file_name)
+    # if not file:
+    #     raise Exception('文件读取失败')
+    if api_provider == 'faceid':
+        result = FaceidLiveness.compare(image1, image2)
+    else:
+        raise Exception('接口未知')
+    func.save_api_log('idcard', json.dumps(result), project, api_provider)
+    return result
+
+
 def result_check():
     nonce_str = request.form.get('nonce_str')
     if not nonce_str:

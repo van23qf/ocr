@@ -44,6 +44,15 @@ def liveness_url():
         return {'status': False, 'msg': str(e)}
 
 
+@app.route('/liveness/compare', methods=['POST'])
+def liveness_compare():
+    from controller import Liveness
+    try:
+        return Liveness.compare()
+    except Exception as e:
+        return {'status': False, 'msg': str(e)}
+
+
 @app.route('/liveness/result_check', methods=['POST'])
 def liveness_result_check():
     from controller import Liveness
