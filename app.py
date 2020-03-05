@@ -76,7 +76,7 @@ def liveness_faceid_return():
     return "success"
 
 
-@app.route('/verify/check', methods=['GET', 'POST'])
+@app.route('/verify/check', methods=['POST'])
 def realname_check():
     from controller import Verify
     try:

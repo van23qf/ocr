@@ -3,7 +3,7 @@
 
 from flask import Flask, request
 import base64, json
-from api import TencentVerify, TencentIdcardOCR, XunfeiIdcardOCR
+from api import TencentVerify, FaceidVerify
 
 from system import func
 from system import global_dict
@@ -24,7 +24,9 @@ def index():
     #     raise Exception('文件读取失败')
     if api_provider == 'tencent':
         result = TencentVerify.check(idcard_name, idcard_number)
+    elif api_provider == 'faceid':
+        result = FaceidVerify.check(idcard_name, idcard_number)
     else:
         raise Exception('接口未知')
-    func.save_api_log('liveness', json.dumps(result), project, api_provider)
+    func.save_api_log('verify', json.dumps(result), project, api_provider)
     return result
