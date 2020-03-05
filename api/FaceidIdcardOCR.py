@@ -44,7 +44,6 @@ def ocr(file, side='front'):
         return {'status': False, 'msg': result['error']}
     if result['result'] != 1001 and result['result'] != 1002:
         return {'status': False, 'msg': '识别失败'}
-
     if result['legality']['Edited'] > 0:
         msg = '该身份证照片为PS合成'
     else:
@@ -55,7 +54,7 @@ def ocr(file, side='front'):
                 msg = '该身份证照片为真实拍摄的合法照片'
             else:
                 msg = '该身份证照片不合法，请确认照片是否完整或PS'
-    if result['side'] == 1:
+    if result['side'] == 0:
         return {
             'status': True,
             'msg': msg,
