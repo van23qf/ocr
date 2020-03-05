@@ -76,6 +76,15 @@ def liveness_faceid_return():
     return "success"
 
 
+@app.route('/verify/check', methods=['GET', 'POST'])
+def realname_check():
+    from controller import Verify
+    try:
+        return Verify.index()
+    except Exception as e:
+        return {'status': False, 'msg': str(e)}
+
+
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     return str(request.headers)

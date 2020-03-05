@@ -55,13 +55,12 @@ def ocr(file, side='front'):
                 msg = '该身份证照片为真实拍摄的合法照片'
             else:
                 msg = '该身份证照片不合法，请确认照片是否完整或PS'
-    if side == 'front':
-        if result['side'] == 1:
-            return {'status': False, 'msg': '请上传人像正面'}
+    if result['side'] == 1:
         return {
             'status': True,
             'msg': msg,
             'data': {
+                'side': 'front',
                 'name': result['name']['result'],
                 'gender': result['gender']['result'],
                 'nation': result['nationality']['result'],
@@ -71,12 +70,11 @@ def ocr(file, side='front'):
             }
         }
     else:
-        if result['side'] == 0:
-            return {'status': False, 'msg': '请上传国徽面'}
         return {
             'status': True,
             'msg': msg,
             'data': {
+                'side': 'back',
                 'authority': result['issued_by']['result'],
                 'validity': result['valid_date_start']['result'] + '-' + result['valid_date_end']['result'],
             }

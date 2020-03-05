@@ -41,7 +41,7 @@ def compare():
     api_provider = request.form.get('api_provider')
     if not api_provider or not project or not image1 or not image2:
         raise Exception('参数不全')
-    api_config = func.get_api_config('liveness', project, api_provider)
+    api_config = func.get_api_config('compare', project, api_provider)
     if not api_config:
         raise Exception('配置错误')
     global_dict.set_value("api_config", api_config)
@@ -52,7 +52,7 @@ def compare():
         result = FaceidLiveness.compare(image1, image2)
     else:
         raise Exception('接口未知')
-    func.save_api_log('idcard', json.dumps(result), project, api_provider)
+    func.save_api_log('compare', json.dumps(result), project, api_provider)
     return result
 
 

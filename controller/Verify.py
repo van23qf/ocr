@@ -3,18 +3,17 @@
 
 from flask import Flask, request
 import base64, json
-from api import FaceidIdcardOCR, TencentIdcardOCR, XunfeiIdcardOCR
+from api import TencentVerify, TencentIdcardOCR, XunfeiIdcardOCR
 
 from system import func
 from system import global_dict
 
-
 def index():
-    side = request.form.get('side')
+    idcard_name = request.form.get('idcard_name')
+    idcard_number = request.form.get('idcard_number')
     project = request.headers.get('Project-Name')
-    file = base64.b64decode(request.form.get('file'))
     api_provider = request.form.get('api_provider')
-    if not api_provider or not file or not project:
+    if not idcard_name or not idcard_number or not api_provider or not project:
         raise Exception('参数不全')
     api_config = func.get_api_config('idcard', project, api_provider)
     if not api_config:
@@ -23,13 +22,9 @@ def index():
     # file = func.read_file(file_name)
     # if not file:
     #     raise Exception('文件读取失败')
-    if api_provider == 'faceid':
-        result = FaceidIdcardOCR.ocr(file, side)
-    elif api_provider == 'tencent':
-        result = TencentIdcardOCR.ocr(file, side)
-    elif api_provider == 'xunfei':
-        result = XunfeiIdcardOCR.ocr(file, side)
+    if api_provider == 'tencent':
+        result = TencentVerify.check(idcard_name, idcard_number)
     else:
         raise Exception('接口未知')
-    func.save_api_log('idcard', json.dumps(result), project, api_provider)
+    func.save_api_log('liveness', json.dumps(result), project, api_provider)
     return result
