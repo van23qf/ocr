@@ -22,7 +22,7 @@ import requests
 import json
 import base64
 
-from system import global_dict
+from system import global_dict, func
 
 
 # 判断为真实身份证照片的阈值
@@ -75,14 +75,16 @@ def ocr(file, side='front'):
             'data': {
                 'side': 'back',
                 'authority': result['issued_by']['result'],
-                'validity': result['valid_date_start']['result'] + '-' + result['valid_date_end']['result'],
+                'validity': func.insert_str(result['valid_date_start']['result'], '.', [4, 7]) + '-' + func.insert_str(result['valid_date_end']['result'], '.', [4, 7]),
             }
         }
 
 
 if __name__ == '__main__':
-    result = ocr('../uploads/idcard_front.jpg')
-    print(result)
+    #result = ocr('../uploads/idcard_front.jpg')
+    #print(result)
+    str1 = '20100617'
+    print(str1)
     # if result['result'] != 1001 and result['result'] != 1002:
     #     print('识别失败')
     # else:

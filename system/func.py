@@ -117,8 +117,15 @@ def str_to_bytes(str):
     return bytes(str, 'utf-8')
 
 
-def sha1(str):
+def sha1(strs):
     import hashlib
     sha1 = hashlib.sha1()  # 可以根据不同的需要选取不同的函数，例如：sha256(), sha3_512() 等。
-    sha1.update(str.encode('utf-8'))
+    sha1.update(strs.encode('utf-8'))
     return sha1.hexdigest()
+
+
+def insert_str(strs, char, pos):
+    str_list = list(strs)
+    for i in pos:
+        str_list.insert(i, char)
+    return "".join(str_list)
