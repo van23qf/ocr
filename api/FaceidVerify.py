@@ -59,8 +59,10 @@ def check(idcard_name, idcard_number):
             raise Exception('当前姓名与身份证号码不匹配')
         elif result.get('error_message') == 'NO_SUCH_ID_NUMBER':
             raise Exception('身份证号码不存在')
+        elif result.get('error_message') == 'ID_NUMBER_NAME_NOT_MATCH':
+            raise Exception('身份证号码和姓名不匹配')
         else:
-            raise Exception(result.get('error_message'))
+            raise Exception(result.get('error_message')+'：校验失败')
     return {'status': True, 'msg': 'success'}
 
 
