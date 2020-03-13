@@ -15,6 +15,8 @@ def index():
     api_provider = request.form.get('api_provider')
     if not idcard_name or not idcard_number or not api_provider or not project:
         raise Exception('参数不全')
+    if func.check_local_idcard(idcard_number, idcard_name):
+        return {'status': True, 'msg': 'success111'}
     api_config = func.get_api_config('idcard', project, api_provider)
     if not api_config:
         raise Exception('配置错误')
@@ -29,4 +31,5 @@ def index():
     else:
         raise Exception('接口未知')
     func.save_api_log('verify', json.dumps(result), project, api_provider)
+    func.save_idcard_log(idcard_number, idcard_name)
     return result

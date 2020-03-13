@@ -4,7 +4,7 @@
 
 import base64, json, os, hashlib
 from datetime import datetime
-from system.model import ApiLog, Project
+from system.model import ApiLog, Project, IdcardLog
 from system import db, Redis
 
 from flask import Flask, request
@@ -51,6 +51,45 @@ def save_api_log(api_name, result, project, api_provider, nonce_str=''):
     apilog.nonce_str = nonce_str
     apilog.created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return apilog.insert()
+
+
+def save_idcard_log(idcard, realname):
+    """
+    记录已经识别的身份证
+    :param idcard:
+    :param realname:
+    :return:
+    """
+    idcardlog = IdcardLog.Model()
+    idcardlog.idcard = idcard
+    idcardlog.realname = realname
+    return idcardlog.insert()
+
+
+def check_local_idcard(idcard, realname):
+    """
+    检查本地的身份证记录
+    :param idcard:
+    :param realname:
+    :return:
+    """
+    sql1 = "select * from idcard_log where idcard='{idcard}'".format(idcard=idcard)
+    data_by_idcard = db.get_one(sql1)
+    if data_by_idcard:
+        if data_by_idcard['realname'] != realname:
+            raise Exception('姓名和身份证号码不匹配')
+        else:
+            return True
+    else:
+        sql2 = "select * from idcard_log where realname='{realname}'".format(realname=realname)
+        data_by_realname = db.get_one(sql2)
+        if data_by_realname:
+            if data_by_realname['idcard'] != idcard:
+                raise Exception('姓名和身份证号码不匹配')
+            else:
+                return True
+        else:
+            return False
 
 
 def get_api_config(api_name, project, api_provider):
