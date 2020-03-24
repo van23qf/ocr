@@ -17,7 +17,7 @@ def ocr(file):
         raise Exception(result_json['status'] + ": " + result_json['reason'])
     return {
         'status': True,
-        'data': result_json['medical_result']
+        'data': common.format_result(result_json['medical_result'], 'guangdong')
     }
 
 
