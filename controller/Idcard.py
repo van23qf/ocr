@@ -14,8 +14,12 @@ def index():
     project = request.headers.get('Project-Name')
     file = base64.b64decode(request.form.get('file'))
     api_provider = request.form.get('api_provider')
-    if not api_provider or not file or not project:
-        raise Exception('参数不全')
+    if not api_provider:
+        raise Exception('接口参数错误')
+    if not file:
+        raise Exception('文件缺失')
+    if not project:
+        raise Exception('项目名称缺失')
     api_config = func.get_api_config('idcard', project, api_provider)
     if not api_config:
         raise Exception('配置错误')
