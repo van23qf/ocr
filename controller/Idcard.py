@@ -17,7 +17,7 @@ def index():
     if not api_provider:
         raise Exception('接口参数错误')
     if not file:
-        raise Exception('文件缺失')
+        raise Exception('上传文件缺失')
     if not project:
         raise Exception('项目名称缺失')
     api_config = func.get_api_config('idcard', project, api_provider)
