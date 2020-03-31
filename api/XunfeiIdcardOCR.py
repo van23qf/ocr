@@ -60,9 +60,7 @@ def ocr(file, side='front'):
             return {'status': False, 'msg': result['code'] + '：' + result['desc']}
         if result['data']['error_code'] != 0:
             return {'status': False, 'msg': str(result['data']['error_code']) + '：' + result['data']['error_msg']}
-        if result['data']['type'] == '临时身份证':
-            return {'status': False, 'msg': '不支持临时身份证'}
-        if result['data']['type'] != '第二代身份证背面' and result['data']['type'] != '第二代身份证':
+        if result['data']['type'] != '第二代身份证背面' and result['data']['type'] != '第二代身份证' and result['data']['type'] != '身份证正反面或临时身份证':
             return {'status': False, 'msg': '身份证识别失败'}
         msg = 'success'
         if result['data']['type'] == '第二代身份证':
@@ -77,6 +75,22 @@ def ocr(file, side='front'):
                     'birth': result['data']['birthday'].replace('年', '-').replace('月', '-').replace('日', ''),
                     'address': result['data']['address'],
                     'idnum': result['data']['id_number'],
+                }
+            }
+        elif result['data']['type'] == '身份证正反面或临时身份证':
+            return {
+                'status': True,
+                'msg': msg,
+                'data': {
+                    'side': 'temp',
+                    'name': result['data']['name'],
+                    'gender': result['data']['sex'],
+                    'nation': result['data']['people'],
+                    'birth': result['data']['birthday'].replace('年', '-').replace('月', '-').replace('日', ''),
+                    'address': result['data']['address'],
+                    'idnum': result['data']['id_number'],
+                    'authority': result['data']['issue_authority'],
+                    'validity': result['data']['validity'],
                 }
             }
         else:
