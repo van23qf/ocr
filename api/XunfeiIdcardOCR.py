@@ -61,7 +61,7 @@ def ocr(file, side='front'):
         if result['data']['error_code'] != 0:
             return {'status': False, 'msg': str(result['data']['error_code']) + '：' + result['data']['error_msg']}
         if result['data']['type'] != '第二代身份证背面' and result['data']['type'] != '第二代身份证' and result['data']['type'] != '身份证正反面或临时身份证':
-            return {'status': False, 'msg': '身份证识别失败'}
+            return {'status': False, 'msg': result['data']['type'] + '识别失败'}
         msg = 'success'
         if result['data']['type'] == '第二代身份证':
             return {
