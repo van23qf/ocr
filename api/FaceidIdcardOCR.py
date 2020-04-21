@@ -41,7 +41,8 @@ def ocr(file, side='front'):
     response = requests.post('https://api.megvii.com/faceid/v3/ocridcard', data=data, files=image_file)
     result = json.loads(response.text)
     if not result.get('result'):
-        return {'status': False, 'msg': result['error']}
+        #return {'status': False, 'msg': result['error']}
+        return {'status': False, 'msg': '当前身份证照片非法'}
     if result['result'] != 1001 and result['result'] != 1002:
         return {'status': False, 'msg': '身份证照片非法'}
     if result['legality']['Edited'] > 0:
