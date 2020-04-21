@@ -43,7 +43,7 @@ def ocr(file, side='front'):
     if not result.get('result'):
         return {'status': False, 'msg': result['error']}
     if result['result'] != 1001 and result['result'] != 1002:
-        return {'status': False, 'msg': '识别失败'}
+        return {'status': False, 'msg': '身份证照片非法'}
     if result['legality']['Edited'] > 0:
         msg = '该身份证照片为PS合成'
     else:
