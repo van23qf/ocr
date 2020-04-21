@@ -57,9 +57,11 @@ def ocr(file, side='front'):
         r = requests.post(URL, data=data, headers=getHeader())
         result = json.loads(str(r.content, 'utf-8'))
         if result['code'] != "0":
-            return {'status': False, 'msg': result['code'] + '：' + result['desc']}
+            #return {'status': False, 'msg': result['code'] + '：' + result['desc']}
+            return {'status': False, 'msg': '当前身份证照片不合法'}
         if result['data']['error_code'] != 0:
-            return {'status': False, 'msg': str(result['data']['error_code']) + '：' + result['data']['error_msg']}
+            #return {'status': False, 'msg': str(result['data']['error_code']) + '：' + result['data']['error_msg']}
+            return {'status': False, 'msg': '当前身份证照片不合法'}
         if result['data']['type'] != '第二代身份证背面' and result['data']['type'] != '第二代身份证' and result['data']['type'] != '身份证正反面或临时身份证':
             #return {'status': False, 'msg': '识别失败：' + str(r.content, 'utf-8')}
             return {'status': False, 'msg': '当前身份证照片不合法'}
